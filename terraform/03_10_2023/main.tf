@@ -10,8 +10,8 @@ resource "openstack_networking_subnet_v2" "subnet_private" {
   cidr       = local.kis_os_cidr
 }
 
-resource "openstack_networking_router_v2" "router_private_siet" {
-  name                = var.router_name
-  admin_state_up      = true                  
-  external_network_id = "f67f0d72-0ddf-11e4-9d95-e1f29f417e2f"
-}
+# resource "openstack_networking_router_v2" "router_private_siet" {
+#   name                = var.router_name
+#   admin_state_up      = true                  
+#   external_network_id = "f67f0d72-0ddf-11e4-9d95-e1f29f417e2f"
+# }
