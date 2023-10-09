@@ -1,0 +1,4 @@
+..\terraform.exe fmt -recursive 
+.\terraform.exe plan
+.\terraform.exe apply --auto-approve
+ .\terraform.exe init
