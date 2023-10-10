@@ -12,4 +12,9 @@ locals {
   }
   kis_os_cidr = "10.0.0.0/20"
   kis_ext_cidr = "0.0.0.0/0"  # Allow ICMP from any source
+  university = {
+    network = {
+      cidr = "158.193.0.0/16" # zistit svoju ip adresu
+    }
+  }
 }
