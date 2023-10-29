@@ -27,3 +27,6 @@ variable "key_pair_name" {
 variable "my_public_ip" {
   type = string
 }
+variable "user_data" {
+  type = string
+}
