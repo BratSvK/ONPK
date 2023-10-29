@@ -44,6 +44,8 @@ module "instance" {
   username      = var.username
   tenant_name   = var.tenant_name
   environment   = var.environment
+  network_name  = var.network_name
+  router_name   = var.router_name
   my_public_ip  = data.http.my_public_ip.response_body
   key_pair_name = openstack_compute_keypair_v2.keypair.name
   user_data     = data.cloudinit_config.user_data.rendered

@@ -10,6 +10,13 @@ variable "tenant_name" {
   type = string
 }
 
+variable "network_name" {
+  type = string
+}
+variable "router_name" {
+  type = string
+}
+
 variable "flavor_name" {
   type = string
   default = "ONPK_large"
