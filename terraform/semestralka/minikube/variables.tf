@@ -26,3 +26,11 @@ variable "environment" {
   type    = string
   default = "dev"
 }
+
+variable "key_pair_name" {
+  type = string
+}
+
+variable "project" {
+  type = string
+}

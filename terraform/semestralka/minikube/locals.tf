@@ -14,10 +14,10 @@ locals {
   kis_ext_cidr = "0.0.0.0/0"  # Allow ICMP from any source
   university = {
     network = {
-      cidr = "158.193.0.0/16" # zistit svoju ip adresu
+      cidr = my_public_ip # zistit svoju ip adresu
     }
   }
   
   my_public_ip = "${data.http.my_public_ip.response_body}/32"
-  project      = lower("${var.tenant_name}-minikube")
+  # project      = lower("${var.tenant_name}-minikube")
 }
