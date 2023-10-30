@@ -18,13 +18,13 @@ data "openstack_compute_flavor_v2" "flavor_1" {
   name = "1c05r8d"
 }
 
-# data "openstack_images_image_v2" "ubuntu" {
-#   name = "ubuntu-22.04-KIS"
-# }
-
-data "openstack_images_image_v2" "debian" {
-  name = "debian-12-kis"
+data "openstack_images_image_v2" "ubuntu" {
+  name = "ubuntu-22.04-KIS"
 }
+
+# data "openstack_images_image_v2" "debian" {
+#   name = "debian-12-kis"
+# }
 
 resource "openstack_networking_secgroup_v2" "security_group" {
   name        = "${var.project}-${var.environment}-secgroup"
@@ -73,7 +73,7 @@ resource "openstack_networking_secgroup_rule_v2" "security_group_rule_tcp" {
 
 resource "openstack_compute_instance_v2" "jump_server" {
   name            = "${var.project}-${var.environment}-jump-server"
-  image_id        = data.openstack_images_image_v2.debian.id
+  image_id        = data.openstack_images_image_v2.ubuntu.id
   flavor_id       = data.openstack_compute_flavor_v2.flavor_1.id
   key_pair        = var.key_pair_name
   security_groups = [openstack_networking_secgroup_v2.security_group.name]
@@ -92,7 +92,7 @@ resource "openstack_compute_interface_attach_v2" "jump_interface_private" {
 
 resource "openstack_compute_instance_v2" "server_private" {
   name            = "${var.project}-${var.environment}-instance_private"
-  image_id        = data.openstack_images_image_v2.debian.id
+  image_id        = data.openstack_images_image_v2.ubuntu.id
   flavor_id       = data.openstack_compute_flavor_v2.flavor_1.id
   key_pair        = var.key_pair_name
   security_groups = [openstack_networking_secgroup_v2.security_group.name]
