@@ -74,6 +74,8 @@ resource "openstack_compute_instance_v2" "jump_server" {
   key_pair        = var.key_pair_name
   security_groups = [openstack_networking_secgroup_v2.security_group.name]
 
+  user_data = var.user_data
+
   network {
     name = var.network_name
   }

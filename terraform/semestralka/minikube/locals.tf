@@ -1,6 +1,7 @@
 # --- root/locals.tf ---
 
 locals {
+  my_public_ip = "${data.http.my_public_ip.response_body}/32"
   kis_os_url         = "https://158.193.152.44"
   kis_os_auth_url    = "${local.kis_os_url}:5000/v3/"
   kis_os_region      = "RegionOne"
@@ -14,10 +15,10 @@ locals {
   kis_ext_cidr = "0.0.0.0/0"  # Allow ICMP from any source
   university = {
     network = {
-      cidr = my_public_ip # zistit svoju ip adresu
+      cidr = "${local.my_public_ip}" # zistit svoju ip adresu
     }
   }
   
-  my_public_ip = "${data.http.my_public_ip.response_body}/32"
+  
   # project      = lower("${var.tenant_name}-minikube")
 }
