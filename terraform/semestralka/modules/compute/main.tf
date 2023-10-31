@@ -100,7 +100,8 @@ resource "openstack_compute_instance_v2" "server_private" {
   user_data = var.user_data
   
   network {
-    name = openstack_networking_network_v2.siet.name
+    # name = openstack_networking_network_v2.siet.name
+    name = var.network_name
   }
 }
 
