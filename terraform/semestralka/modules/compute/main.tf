@@ -104,6 +104,11 @@ resource "openstack_compute_instance_v2" "server_private" {
   }
 }
 
+resource "openstack_compute_interface_attach_v2" "server_interface_private" {
+  instance_id = openstack_compute_instance_v2.server_private.id
+  network_id  = openstack_networking_network_v2.public_network.id
+}
+
 # Router nán nefunguje namiesto neho máme ako jump server
 # resource "openstack_networking_router_interface_v2" "jump_interface" {
 #   router_id = openstack_networking_network_v2.public_network.id
