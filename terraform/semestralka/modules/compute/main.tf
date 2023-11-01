@@ -15,7 +15,7 @@ data "openstack_networking_network_v2" "public_network" {
 }
 
 data "openstack_compute_flavor_v2" "flavor_1" {
-  name = "1c05r8d"
+  name = "4c4r40d"
 }
 
 data "openstack_images_image_v2" "ubuntu" {
