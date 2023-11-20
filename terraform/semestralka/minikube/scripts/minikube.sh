@@ -3,7 +3,7 @@
 K8S_VERSION="v1.23.13"
 
 ### conntrack: install
-apt install conntrack
+apt -y install conntrack
 
 ### kubectl: install
 curl --silent -LO https://storage.googleapis.com/kubernetes-release/release/$K8S_VERSION/bin/linux/amd64/kubectl
