@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webserver-index
+data:
+  index.html: |
+    {{ .Values.indexhtml }}

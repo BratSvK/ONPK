@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: external-appconfig
+  namespace: default
+data:
+  REACT_APP_APIHOSTPORT: api-voteapp.apps.us-west-1.starter.openshift-online.com
+  MONGO_CONN_STR: "mongodb://appbackendmongodb:27017/{{.Values.mongodb.database}}" 
+  MONGO_USERNAME: admin
+  MONGO_PASSWORD: admin
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: zaUniApp-deployment
+  name: {{ template "webserver.fullname" . }}
+spec: 
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: zaUniAppFE
+  template:
+    metadata:
+      labels:
+        app: zaUniAppFE
+    spec:
+      {{- with .Values.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      # volumes:
+      # - name: indexhtml
+      #   configMap:
+      #     name: webserver-index
+      containers:
+      - image: {{ .Values.image.repository }}:{{.Values.image.tag}}
+        name: webserver-container
+        {{- with .Values.volumeMounts }}
+        volumeMounts:
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+        # volumeMounts:
+        # - name: indexhtml
+        #   mountPath: /usr/share/nginx/html
+        ports:
+        - containerPort: 80
