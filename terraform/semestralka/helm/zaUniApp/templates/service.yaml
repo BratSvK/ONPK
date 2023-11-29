@@ -2,13 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: webserver-deployment
+    app: {{.Values.app.name}}-deployment
   name: {{ template "webserver.fullname" . }}
 spec:
   ports:
   - port: {{ .Values.service.port}}
     protocol: TCP
-    targetPort: 80
+    targetPort: {{ .Values.app.containerExpose }}
   selector:
-    app: webserver
+    app: {{.Values.app.name}}
   type: {{ .Values.service.type }}

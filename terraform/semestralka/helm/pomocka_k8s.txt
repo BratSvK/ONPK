@@ -1,0 +1,8 @@
+# prikazy k8s 
+helm template test ./zaUniApp/  #vytvorí template aby som vedel ako to ide
+kubectl get pods -n dev-zauni
+helm delete devzaunife -n dev-zauni
+
+minikube dashboard --url --port 8080
+kubectl describe pod devzaunife-zaunizaapp-fbff7844d-dswxk -n dev-zauni
+helm upgrade devzaunife ./zaUniApp -n dev-zauni --create-namespace -i

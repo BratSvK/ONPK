@@ -1,47 +1,41 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: external-appconfig
-  namespace: default
-data:
-  REACT_APP_APIHOSTPORT: api-voteapp.apps.us-west-1.starter.openshift-online.com
-  MONGO_CONN_STR: "mongodb://appbackendmongodb:27017/{{.Values.mongodb.database}}" 
-  MONGO_USERNAME: admin
-  MONGO_PASSWORD: admin
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: zaUniApp-deployment
+    app: {{ .Values.app.name }}-deployment
   name: {{ template "webserver.fullname" . }}
 spec: 
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: zaUniAppFE
+      app: {{ .Values.app.name }}
   template:
     metadata:
       labels:
-        app: zaUniAppFE
+        app: {{ .Values.app.name }}
     spec:
-      {{- with .Values.volumes }}
-      volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      # volumes:
-      # - name: indexhtml
-      #   configMap:
-      #     name: webserver-index
       containers:
-      - image: {{ .Values.image.repository }}:{{.Values.image.tag}}
-        name: webserver-container
-        {{- with .Values.volumeMounts }}
-        volumeMounts:
-          {{- toYaml . | nindent 12 }}
+      - image: {{ .Values.image_fe.repository }}:{{ .Values.image_fe.tag }}
+        name: {{ .Values.image_fe.name }}
+        env:
+         {{- range .Values.env_fe }}
+        - name: {{ .name }}
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .configMapName }}
+              key: {{ .configMapKey }}
         {{- end }}
-        # volumeMounts:
-        # - name: indexhtml
-        #   mountPath: /usr/share/nginx/html
+        ports:
+        - containerPort: {{ .Values.app.containerExpose }}
+      - image: {{ .Values.image_be.repository }}:{{ .Values.image_be.tag }}
+        name: {{ .Values.image_be.name }}
+        env:
+         {{- range .Values.env_be }}
+        - name: {{ .name }}
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .configMapName }}
+              key: {{ .configMapKey }}
+        {{- end }}
         ports:
         - containerPort: 80

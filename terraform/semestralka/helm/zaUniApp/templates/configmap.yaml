@@ -1,7 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: webserver-index
+  name: {{ .Values.configMap.name }}
+  namespace: {{ .Values.app.namespace }}
 data:
-  index.html: |
-    {{ .Values.indexhtml }}
+  REACT_APP_APIHOSTPORT: api-voteapp.apps.us-west-1.starter.openshift-online.com
+  MONGO_CONN_STR: "mongodb://appbackendmongodb:27017/{{.Values.mongodb.mongodbDatabase}}" 
+  MONGO_USERNAME: {{ .Values.mongodb.mongodbUsername }}
+  MONGO_PASSWORD: {{ .Values.mongodb.mongodbPassword }}
