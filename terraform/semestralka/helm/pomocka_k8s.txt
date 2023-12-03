@@ -6,3 +6,7 @@ helm delete devzaunife -n dev-zauni
 minikube dashboard --url --port 8080
 kubectl describe pod devzaunife-zaunizaapp-fbff7844d-dswxk -n dev-zauni
 helm upgrade devzaunife ./zaUniApp -n dev-zauni --create-namespace -i
+
+helm delete gajdytest -n gajdyzauni
+helm upgrade gajdytest ./zaUniApp/ -n gajdyzauni --create-namespace -i
+ helm template test ./zaUniApp/

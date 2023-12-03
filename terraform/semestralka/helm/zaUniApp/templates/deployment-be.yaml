@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.app.name }}-deployment-be
+  name: {{ template "webserver.fullname" . }}-be
+spec: 
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}-be
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}-be
+    spec:
+      containers:
+      - image: {{ .Values.image_be.repository }}:{{ .Values.image_be.tag }}
+        name: {{ .Values.image_be.name }}
+        env:
+         {{- range .Values.env_be }}
+        - name: {{ .name }}
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .configMapName }}
+              key: {{ .configMapKey }}
+        {{- end }}
+        ports:
+        - containerPort: {{ .Values.app.containerExposeBe }}

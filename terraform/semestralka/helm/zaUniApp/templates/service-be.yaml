@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{.Values.app.name}}-service-be
+  name: {{ template "webserver.fullname" . }}-be
+spec:
+  ports:
+  - port: {{ .Values.service.portBe}}
+    protocol: TCP
+    targetPort: {{ .Values.app.containerExposeBe }}
+  selector:
+    app: {{.Values.app.name}}-be
+  type: {{ .Values.service.type }}

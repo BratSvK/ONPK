@@ -3,7 +3,6 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
- 
 configMap:
   name: &defaultConfigMap external-appconfig
 
@@ -31,8 +30,9 @@ mongodb:
 
 app:
   name: zauni-app
-  namespace: dev-zauni
-  containerExpose: &exposePort 8080
+  namespace: gajdyzauni
+  containerExposeFe: &exposePort 8080
+  containerExposeBe: &exposePortBe 8001
 
 image_fe:
   repository: gajdy55/testfe
@@ -55,6 +55,7 @@ fullnameOverride: ""
 service:
   type: NodePort
   port: *exposePort
+  portBe: *exposePortBe
 
 resources: {}
 # We usually recommend not to specify default resources and to leave this as a conscious
