@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.name }}
+  namespace: {{ .Values.app.namespace | quote }}
+data:
+  REACT_APP_APIHOSTPORT: "api-voteapp.apps.us-west-1.starter.openshift-online.com"
+  MONGO_CONN_STR: "mongodb://gajdytest-mongodb:27017/{{ .Values.mongodb.auth.database }}" 
+  MONGO_USERNAME: {{ .Values.mongodb.auth.rootUser | quote }}
+  MONGO_PASSWORD: {{ .Values.mongodb.auth.rootPassword | quote }}

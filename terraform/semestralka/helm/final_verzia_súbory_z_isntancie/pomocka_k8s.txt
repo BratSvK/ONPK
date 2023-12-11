@@ -1,0 +1,108 @@
+# prikazy k8s 
+helm template test ./zaUniApp/  #vytvorí template aby som vedel ako to ide
+kubectl get pods -n dev-zauni
+helm delete devzaunife -n dev-zauni
+
+minikube dashboard --url --port 8080
+kubectl describe pod devzaunife-zaunizaapp-fbff7844d-dswxk -n dev-zauni
+helm upgrade devzaunife ./zaUniApp -n dev-zauni --create-namespace -i
+
+helm delete gajdytest -n gajdyzauni
+helm upgrade gajdytest ./zaUniApp/ -n gajdyzauni --create-namespace -i
+helm template test ./zaUniApp/
+
+# viac nodový cluster a perzistencia 
+minikube addons enable volumesnapshots
+minikube addons enable csi-hostpath-driver
+minikube addons disable storage-provisioner
+minikube addons disable default-storageclass
+kubectl patch storageclass csi-hostpath-sc -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}
+
+# hranie sa s podmi
+helm template test ./zaUniApp/
+helm upgrade gajdytest ./zaUniApp/ -n gajdyzauni --create-namespace -i
+helm delete gajdytest -n gajdyzauni
+
+#uprava na mongodb chart
+mongodb:
+  service:
+    type: ClusterIP
+  persistence:
+    enabled: false
+  #auth:
+    #rootUser: mongoroot
+    #rootPassword: mongotest
+  initdbScripts:
+    init_script.js: |
+      db = db.getSiblingDB("platformsdb");
+      db.createUser({
+        user: "admin",
+        pwd: "password",
+        roles:[{role: "readWrite" , db:"platformsdb"}]
+      });
+      db.createCollection("platforms");
+      db.platforms.insertMany(
+       [
+         {
+              "name": "openshift",
+              "codedetail": {
+                  "usecase": "Container platform",
+                  "rank": 12,
+                  "homepage": "https://openshift.com",
+                  "download": "https://developers.redhat.com/products/codeready-containers/overview",
+                  "votes": 0
+              }
+          },
+          {
+              "name": "kubernetes",
+              "codedetail": {
+                  "usecase": "Container orchestration platform ",
+                  "rank": 38,
+                 "homepage": "https://kubernetes.com",
+                  "download": "https://kubernetes.io/docs/tasks/tools/install-minikube/",
+                  "votes": 0
+              }
+          },
+          {
+              "name": "rancher",
+              "codedetail": {
+                  "usecase": "Container platform management ",
+                  "rank": 50,
+                  "homepage": "https://rancher.com/",
+                  "download": "https://github.com/rancher/rancher",
+                  "votes": 0
+              }
+          }
+        ]    
+      );
+
+
+
+# mongodb 
+wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | sudo tee /etc/apt/trusted.gpg.d/server-7.0.asc
+sudo apt-get install gnupg
+wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | sudo tee /etc/apt/trusted.gpg.d/server-7.0.asc
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-mongosh
+mongosh --version
+mongosh --username gajdy --password password --authenticationDatabase platformsDB
+
+# port forward na svoj lokálny port 8080
+# alebo to skúsiť cez putty ssh tunel pridať source port na port-forward aký mám a potom pridám ip na local machine a pripojím sa na putty server
+ssh -L 8080:127.0.0.1:9097 ubuntu@stud1-development-instance-private #local machine 
+kubectl port-forward service/tvoj-service 8080:9097
+minikube service list
+sudo apt install net-tools
+mongosh --host gajdytest-mongodb-8657f7fdb5-m9b77 --port 27017 --username gajdy --password password --authenticationDatabase platformsDB
+mongosh --host gajdytest-mongodb --port 27017 --username gajdy --password admin
+# na testovanie vo vnutri clustera treba spraviť svajcarsky nozik
+kubectl run -n gajdyzauni tmp-mongosh --image=rtsp/mongosh --rm -it -- bash
+mongosh --host gajdytest-mongodb --port 27017 --username mongoroot --password admin
+
+# svajciarsky nozik
+kubectl run --rm -it test -n gajdyzauni --image=busybox -- /bin/sh
+kubectl run tmp-mongosh --image=rtsp/mongosh --rm -it -- bash
+
+
+

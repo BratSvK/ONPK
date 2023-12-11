@@ -1,0 +1,21 @@
+replicaCount: 1
+
+nameOverride: zaUniApp-deployment
+fullnameOverride: ""
+
+volumes:
+- name: indexhtml
+  configMap:
+    name: zaUniApp-index
+
+volumeMounts:
+- name: indexhtml
+  mountPath: /usr/share/nginx/html
+
+indexhtml: |
+  <html><body>heloo test</body></html>
+image:
+  repository: docker.io/nginx
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"

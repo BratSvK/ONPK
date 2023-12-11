@@ -17,3 +17,10 @@ curl --silent -Lo minikube https://storage.googleapis.com/minikube/releases/late
 su - ubuntu -c "minikube start --kubernetes-version=${K8S_VERSION} --nodes=2"
 su - ubuntu -c "minikube addons enable ingress"
 su - ubuntu -c "minikube status"
+
+### minikube: multinode cluster a perzistencia
+su - ubuntu -c "minikube addons enable volumesnapshots"
+su - ubuntu -c "minikube addons enable csi-hostpath-driver"
+su - ubuntu -c "minikube addons disable storage-provisioner"
+su - ubuntu -c "minikube addons disable default-storageclass"
+su - ubuntu -c "kubectl patch storageclass csi-hostpath-sc -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}"
