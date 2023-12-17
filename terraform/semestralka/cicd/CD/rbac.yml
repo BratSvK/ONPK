@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gajdyzauni
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pipeline-helm-sa
+  namespace: gajdyzauni
+
+---
+
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: pipeline-helm-role
+rules:
+  - apiGroups: [""]
+    resources: ["services", "namespaces", "secrets"]
+    verbs: ["list", "get", "create", "update", "patch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "create", "update", "patch"]
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses"]
+    verbs: ["get", "create", "update", "patch"]
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pipeline-role-helm-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: pipeline-helm-role
+subjects:
+  - kind: ServiceAccount
+    name: pipeline-helm-sa
+    namespace: gajdyzauni

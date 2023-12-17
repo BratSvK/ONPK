@@ -1,0 +1,27 @@
++ '[' false '=' true ]
++ '[' true '=' true ]
++ cp -R /workspace/ssh-directory /tekton/home/.ssh
++ chmod 700 /tekton/home/.ssh
++ chmod -R 400 /tekton/home/.ssh/id_rsa
++ '[' false '=' true ]
++ CHECKOUT_DIR=/workspace/output/
++ '[' true '=' true ]
++ cleandir
++ '[' -d /workspace/output/ ]
++ rm -rf '/workspace/output//*'
++ rm -rf '/workspace/output//.[!.]*'
++ rm -rf '/workspace/output//..?*'
++ test -z 
++ test -z 
++ test -z 
++ /ko-app/git-init '-url=git@github.com:BratSvK/ONPK.git' '-revision=' '-refspec=' '-path=/workspace/output/' '-sslVerify=true' '-submodules=true' '-depth=1' '-sparseCheckoutDirectories='
+{"level":"warn","ts":1702825531.6061568,"caller":"git/git.go:278","msg":"URL(\"git@github.com:BratSvK/ONPK.git\") appears to need SSH authentication but no SSH credentials have been provided"}
+{"level":"info","ts":1702825536.288599,"caller":"git/git.go:170","msg":"Successfully cloned git@github.com:BratSvK/ONPK.git @ e9d341d57e43ef315dd60d78dfe5a5947ea5182a (grafted, HEAD) in path /workspace/output/"}
+{"level":"info","ts":1702825536.324957,"caller":"git/git.go:208","msg":"Successfully initialized and updated submodules in path /workspace/output/"}
++ cd /workspace/output/
++ git rev-parse HEAD
++ RESULT_SHA=e9d341d57e43ef315dd60d78dfe5a5947ea5182a
++ EXIT_CODE=0
++ '[' 0 '!=' 0 ]
++ printf '%s' e9d341d57e43ef315dd60d78dfe5a5947ea5182a
++ printf '%s' git@github.com:BratSvK/ONPK.git

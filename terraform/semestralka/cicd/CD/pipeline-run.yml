@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: helm-upgrade-test-pipeline-run
+spec:
+  serviceAccountName: pipeline-sa
+  pipelineRef:
+    name: helm-upgrade-zauni-app-pipeline
+  podTemplate:
+    securityContext:
+      fsGroup: 65532
+  params:
+    - name: repo-url
+      value: git@github.com:BratSvK/ONPK.git
+    - name: charts_dir
+      value: terraform/semestralka/helm/final_verzia_súbory_z_isntancie/zaUniApp
+    - name: release_name
+      value: zauniapp
+  workspaces:
+    - name: shared-data
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+    - name: git-credentials
+      secret:
+        secretName: git-credentials 

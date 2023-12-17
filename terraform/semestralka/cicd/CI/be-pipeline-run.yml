@@ -1,0 +1,35 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: clone-build-push-run
+spec:
+  serviceAccountName: pipeline-sa
+  pipelineRef:
+    name: clone-build-push
+  podTemplate:
+    securityContext:
+      fsGroup: 65532
+  params:
+    - name: repo-url
+      value: git@github.com:BratSvK/ONPK.git
+    - name: image-reference
+      value: gajdy55/testbe:5.5.5
+    - name: dockerfile
+      value: terraform/semestralka/docker_images/BE/Dockerfile
+    - name: context
+      value: terraform/semestralka/docker_images/BE
+  workspaces:
+    - name: shared-data
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce 
+          resources:
+            requests:
+              storage: 1Gi
+    - name: git-credentials
+      secret:
+        secretName: git-credentials
+    - name: docker-credentials
+      secret:
+        secretName: docker-credentials

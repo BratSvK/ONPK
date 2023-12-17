@@ -1,0 +1,45 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: helm-upgrade-zauni-app-pipeline
+spec:
+  description: |
+    This pipeline clones a git repo, and call helm upgrade and create resources in kubernetes as objects.
+  params:
+    - name: repo-url
+      type: string
+    - name: charts_dir
+      type: string
+    - name: release_name
+      type: string
+  workspaces:
+    - name: shared-data
+    - name: git-credentials
+  tasks:
+    - name: fetch-source
+      taskRef:
+        name: git-clone
+      params:
+        - name: url
+          value: $(params.repo-url)
+      workspaces:
+        - name: output
+          workspace: shared-data
+        - name: ssh-directory
+          workspace: git-credentials
+    - name: helm-upgrade-from-source
+      runAfter: ["fetch-source"]
+      taskRef:
+        name: helm-upgrade-from-source
+      params:
+        - name: charts_dir
+          value: $(params.charts_dir)
+        - name: release_name
+          value: $(params.release_name)
+        - name: upgrade_extra_params
+          value: "--force"
+        - name: release_namespace
+          value: gajdyzauni
+      workspaces:
+        - name: source
+          workspace: shared-data

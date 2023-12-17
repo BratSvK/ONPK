@@ -1,0 +1,40 @@
+[1/2] STEP 1/5: FROM docker.io/golang:alpine AS builder
+Trying to pull docker.io/library/golang:alpine...
+Getting image source signatures
+Copying blob sha256:cd71eff6cd957e7814c566ebb2f5295985b58b73a0701c4a2882852d3a62ef24
+Copying blob sha256:2979d3ffd3a49b2dd31f3e87826cb75934ebef5c0e6e44c8ae38ead06678961d
+Copying blob sha256:f54eb9fb8c5c3cc78f71a4ef714cd1600c96d510fb6396a77fdf373551f7e5a0
+Copying blob sha256:661ff4d9561e3fd050929ee5097067c34bafc523ee60f5294a37fd08056a73ca
+Copying config sha256:d9213efcc94a6e63913755d122d173564c238af7a41765ad9688d5506f71bf30
+Writing manifest to image destination
+[1/2] STEP 2/5: RUN mkdir /build 
+time="2023-12-17T15:13:10Z" level=warning msg="Path \"/run/secrets/etc-pki-entitlement\" from \"/etc/containers/mounts.conf\" doesn't exist, skipping"
+time="2023-12-17T15:13:10Z" level=warning msg="Path \"/run/secrets/rhsm\" from \"/etc/containers/mounts.conf\" doesn't exist, skipping"
+[1/2] STEP 3/5: ADD . /build/
+[1/2] STEP 4/5: WORKDIR /build 
+[1/2] STEP 5/5: RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main .
+time="2023-12-17T15:13:11Z" level=warning msg="Path \"/run/secrets/etc-pki-entitlement\" from \"/etc/containers/mounts.conf\" doesn't exist, skipping"
+time="2023-12-17T15:13:11Z" level=warning msg="Path \"/run/secrets/rhsm\" from \"/etc/containers/mounts.conf\" doesn't exist, skipping"
+go: downloading github.com/gorilla/handlers v1.4.2
+go: downloading go.mongodb.org/mongo-driver v1.1.1
+go: downloading github.com/gorilla/mux v1.7.3
+go: downloading github.com/go-stack/stack v1.8.0
+go: downloading github.com/golang/snappy v0.0.1
+go: downloading github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c
+go: downloading github.com/xdg/stringprep v1.0.0
+go: downloading golang.org/x/sync v0.0.0-20190423024810-112230192c58
+go: downloading golang.org/x/text v0.3.2
+go: downloading golang.org/x/crypto v0.0.0-20190909091759-094676da4a83
+[2/2] STEP 1/4: FROM scratch
+[2/2] STEP 2/4: COPY --from=builder /build/main /app/
+[2/2] STEP 3/4: WORKDIR /app
+[2/2] STEP 4/4: CMD ["./main"]
+[2/2] COMMIT gajdy55/testbe:5.5.5
+--> 20ef7dea4526
+Successfully tagged localhost/gajdy55/testbe:5.5.5
+20ef7dea452688447aedbf87134b50a99f2fd9433e12d2b4daac87d298ae783f
+Getting image source signatures
+Copying blob sha256:477916b8b808aca1cedffe07426b919b588fea6493b40ebe0a54973c147abc23
+Copying config sha256:20ef7dea452688447aedbf87134b50a99f2fd9433e12d2b4daac87d298ae783f
+Writing manifest to image destination
+sha256:ba4f79588028a2afa6360fdcc36a667d1ae767ed9acf18c5ab98628304537937gajdy55/testbe:5.5.5
