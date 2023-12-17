@@ -25,7 +25,7 @@ env_be:
 
 app:
   name: zauni-app
-  namespace: "gajdyzauni"
+  namespace: "default"
   containerExposeFe: &exposePort 8080
   containerExposeBe: &exposePortBe 8001
 
@@ -33,7 +33,7 @@ app:
 #namespace: {{ include "mongodb.namespace" . | quote }}
 
 global:
-  namespaceOverride: "gajdyzauni"
+  namespaceOverride: "default"
 
 containerSecurityContext:
   enabled: false
@@ -44,7 +44,7 @@ volumePermissions:
     runAsUser: 0
 
 mongodb:
-  namespaceOverride: "gajdyzauni"
+  namespaceOverride: "default"
   image:
     tag: 4.4.15-debian-10-r8
   auth:
